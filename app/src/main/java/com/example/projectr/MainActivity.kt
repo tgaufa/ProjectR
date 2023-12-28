@@ -63,6 +63,8 @@ fun ChatAppNavigation(){
     val navController = rememberNavController()
     val vm = hiltViewModel<ProjectRViewModel>()
 
+    NotificationMessage(vm = vm)
+
     NavHost(navController =navController , startDestination = DestinationScreen.SignUp.route){
         composable(DestinationScreen.SignUp.route){
             SignUpScreen(navController = navController, vm = vm)
