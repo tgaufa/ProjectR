@@ -70,7 +70,7 @@ fun ChatAppNavigation(){
             SignUpScreen(navController = navController, vm = vm)
         }
         composable(DestinationScreen.Login.route){
-            LoginScreen()
+            LoginScreen(navController = navController, vm = vm)
         }
         composable(DestinationScreen.Profile.route){
             ProfileScreen(navController = navController)

@@ -30,6 +30,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.projectr.CheckSignedIn
 import com.example.projectr.CommonProgressSpinner
 import com.example.projectr.DestinationScreen
 import com.example.projectr.ProjectRViewModel
@@ -39,6 +40,7 @@ import com.example.projectr.navigateTo
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignUpScreen(navController: NavController, vm: ProjectRViewModel) {
+    CheckSignedIn(vm = vm, navController = navController)
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
