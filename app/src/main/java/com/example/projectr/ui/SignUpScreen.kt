@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -94,7 +95,12 @@ fun SignUpScreen(navController: NavController, vm: ProjectRViewModel) {
             
             Button(onClick = {
                 focus.clearFocus(force = true) // to clear the focus on typing
-                // call viewmodel
+                vm.onSigneUp(
+                    nameState.value.text,
+                    numberState.value.text,
+                    emailState.value.text,
+                    passwordState.value.text
+                )
             },
                 modifier = Modifier.padding(8.dp)
             ) {
