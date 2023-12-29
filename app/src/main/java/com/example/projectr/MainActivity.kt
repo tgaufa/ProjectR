@@ -73,7 +73,7 @@ fun ChatAppNavigation(){
             LoginScreen(navController = navController, vm = vm)
         }
         composable(DestinationScreen.Profile.route){
-            ProfileScreen(navController = navController)
+            ProfileScreen(navController = navController, vm = vm)
         }
         composable(DestinationScreen.StatusList.route){
             StatusListScreen(navController = navController)
