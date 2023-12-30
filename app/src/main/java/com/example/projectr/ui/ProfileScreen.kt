@@ -183,6 +183,7 @@ fun ProfileImage(imageURL: String?, vm: ProjectRViewModel) {
     val launcher = rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()){uri: Uri? ->
         uri?.let {
             // call vm to upload picture
+            vm.uploadProfileImage(uri)
         }
 
     }
