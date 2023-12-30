@@ -1,19 +1,28 @@
 package com.example.projectr.ui
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,10 +32,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.projectr.CommonDivider
+import com.example.projectr.CommonImage
 import com.example.projectr.CommonProgressSpinner
 import com.example.projectr.DestinationScreen
 import com.example.projectr.ProjectRViewModel
@@ -46,7 +57,7 @@ fun ProfileScreen(navController: NavController, vm: ProjectRViewModel) {
         val scrollState = rememberScrollState()
         val focus = LocalFocusManager.current
 
-        Column (){
+        Column {
             ProfileContent(
                 modifier = Modifier
                     .weight(1f)
@@ -60,6 +71,7 @@ fun ProfileScreen(navController: NavController, vm: ProjectRViewModel) {
                 onSave = {
                     focus.clearFocus(force = true)
                     // call vm to call user profile
+                    vm.updateProfileData(name = name, number = number)
                 },
                 onBack = {
                     focus.clearFocus(force = true)
@@ -74,7 +86,10 @@ fun ProfileScreen(navController: NavController, vm: ProjectRViewModel) {
                 selectedItem = BottomNavigationItem.PROFILE,
                 navController = navController
             )
+
         }
+
+
     }
 }
 
@@ -91,7 +106,10 @@ fun ProfileContent(
     onBack: () -> Unit,
     onLogout: () -> Unit
 ) {
-    Column {
+
+    val imageURL = vm.userData?.value?.imageURL
+
+    Column(modifier = modifier) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -104,7 +122,7 @@ fun ProfileContent(
 
         CommonDivider()
 
-        ProfileImage()
+        ProfileImage(imageURL = imageURL, vm = vm)
 
         CommonDivider()
 
@@ -146,10 +164,12 @@ fun ProfileContent(
 
         CommonDivider()
 
-        Row (modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-            horizontalArrangement = Arrangement.Center){
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.Center
+        ) {
             Text(text = "Logout", modifier = Modifier.clickable { onLogout.invoke() })
 
         }
@@ -158,5 +178,35 @@ fun ProfileContent(
 }
 
 @Composable
-fun ProfileImage() {
+fun ProfileImage(imageURL: String?, vm: ProjectRViewModel) {
+
+    val launcher = rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()){uri: Uri? ->
+        uri?.let {
+            // call vm to upload picture
+        }
+
+    }
+    Box(modifier = Modifier.height(IntrinsicSize.Min)) {
+
+        Column(
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth()
+                .clickable {
+                           launcher.launch("image/*")
+                },
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Card(shape = CircleShape, modifier = Modifier
+                .padding(8.dp)
+                .size(100.dp)) {
+                CommonImage(data = imageURL)
+            }
+            Text(text = "Change profile picture")
+        }
+
+        val isLoading = vm.inProgress.value
+        if (isLoading)
+            CommonProgressSpinner()
+    }
 }

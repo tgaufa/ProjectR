@@ -39,7 +39,7 @@ class ProjectRViewModel @Inject constructor(
 
     }
 
-    fun onSigneUp(name: String, number: String, email: String, password: String){
+    fun onSignedUp(name: String, number: String, email: String, password: String){
         if (name.isEmpty() or number.isEmpty() or email.isEmpty() or password.isEmpty()){
             handleException(customMessage = "please fill in all fields")
             return
@@ -132,6 +132,9 @@ class ProjectRViewModel @Inject constructor(
         }
     }
 
+    fun updateProfileData(name: String, number: String){
+        createOrUpdateProfile(name = name, number = number)
+    }
     private fun getUserData(uid: String){
         inProgress.value = true
         db.collection(COLLECTION_USER).document(uid)

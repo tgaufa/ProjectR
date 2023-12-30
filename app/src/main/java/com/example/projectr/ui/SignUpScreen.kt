@@ -97,7 +97,7 @@ fun SignUpScreen(navController: NavController, vm: ProjectRViewModel) {
             
             Button(onClick = {
                 focus.clearFocus(force = true) // to clear the focus on typing
-                vm.onSigneUp(
+                vm.onSignedUp(
                     nameState.value.text,
                     numberState.value.text,
                     emailState.value.text,
