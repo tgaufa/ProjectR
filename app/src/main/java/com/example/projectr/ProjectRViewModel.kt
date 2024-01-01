@@ -96,9 +96,9 @@ class ProjectRViewModel @Inject constructor(
     }
 
     private fun createOrUpdateProfile(
-        name: String? = "",
-        number: String? = "",
-        imageURL: String? = ""
+        name: String? = null,
+        number: String? = null,
+        imageURL: String? = null
     ){
         val uid  = auth.currentUser?.uid
         val userData = UserData(
@@ -180,10 +180,11 @@ class ProjectRViewModel @Inject constructor(
             .addOnSuccessListener {
                 val result = it?.metadata?.reference?.downloadUrl
                 result?.addOnSuccessListener(onSuccess)
-                inProgress.value = false
+
             }
             .addOnFailureListener {
                 handleException(it)
+                inProgress.value = false
             }
     }
 
